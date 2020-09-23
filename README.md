@@ -1,21 +1,15 @@
-# Vaquitas
+# Cigarrillos y fumadores
 
-Vamos a simular que hay vacas yendo por un camino, todas para el mismo lado, y se topan con un puente.
-Las vacas caminan a diferentes velocidades, y el puente no soporta el paso de más de una vaca a la vez.
+Un cigarrillo necesita de papel, tabaco y fósforos para ser preparado y fumado. Hay tres fumadores, y cada uno tiene un único ingrediente al que puede acceder todo el tiempo: papel, tabaco o fósforos. Un agente coloca sobre la mesa al azar dos ingredientes, y el correspondientes fumador debe darse cuenta, tomarlos, armar el cigarrillo y fumarlos. Luego el agente vuelve a colocar al azar sobre la mesa dos ingredientes, y así se sigue.
 
-Mirá la implementación que esta ahora, correla algunas veces, y familiarizate con el código.
-
-Ahora agregale semáforos para asegurar que haya solamente una vaca cruzando el puente a la vez. La ejecución debería verse así:
-
-![vaquitas cruzando el puente](assets/vaquitas.gif)
+1. Usar `fumadores.py` como base para sincronizar el agente y los fumadores.
+1. ¿Hay alguna sección crítica?
+1. En vez de con flags que den cuenta si hay o no tal cosa en la mesa, realice una versión con listas. Por ejemplo `listaPapel` si no está vacía es porque hay papel (la puede llenar con cualquier cosa, con 1s por ejemplo).
 
 ## Bonus: variantes 
 
-Ahora podés probar algunas variantes. En principio implementalas todas por separado y siempre tomando como punto de partida la versión que hiciste en el punto anterior.
-
-* Como máximo haya 2 vacas cruzando el puente a la vez. 
-* Lo mismo que antes, pero para una cantidad _N_ de vacas que se configura antes de ejecutar el programa.
-* Que haya dos puentes.
-* Lo mismo que antes, pero para una lista de puentes que se configura antes de ejecutar el programa. (Acá sería buena idea tener una clase `Puente` que indique dónde empieza y qué tan largo es).
-* Que haya vacas caminando en ambos sentidos.
-* Que además de vacas, hayan liebres (muy muy rápidas) y *una* tortuga (muy muy lenta).
+* Que haya tres agentes, y no una solo, uno por cada par de ingredientes. Compiten entre sí para entrar a la mesa y poner sus dos respectivos ingredientes.
+* Que la cantidad de veces que el agente pone ingredientes en la mesa sea acotada.
+* Que puedan haber en la mesa hasta un máximo de dos por cada ingrediente.
+* Que puedan haber en la mesa hasta un máximo de dos por cada ingrediente, salvo para fósforos que sea un máximo de uno.
+* Que los tres fumadores solamente ahora sean armadores de cigarillos, y que haya un único fumador. Como fumar es más lento que armar (poner los `sleep` para que se simule esto), entonces que haya una cantidad acotada de cigarrillos armados sin fumar.
