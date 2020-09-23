@@ -14,7 +14,7 @@ Como base para empezar, siempre se puede tomar la solución original. Luego de e
 * Que la cantidad de veces que el agente pone ingredientes en la mesa sea acotada.
 * Que puedan haber en la mesa hasta un máximo de dos por cada ingrediente.
 * Que puedan haber en la mesa hasta un máximo de dos por cada ingrediente, salvo para fósforos que sea un máximo de uno.
-* Que los tres fumadores solamente ahora sean armadores de cigarillos, y que haya un único fumador. Como fumar es más lento que armar (poner los `sleep` para que se simule esto), entonces que haya una cantidad acotada de cigarrillos armados sin fumar.
+* Que los tres fumadores solamente ahora sean armadores de cigarillos, y que haya cuarto y único fumador. Como fumar es más lento que armar (poner los `sleep` para que se simule esto), entonces que haya una cantidad acotada de cigarrillos armados sin fumar.
 
 ## Bonus extra
 
