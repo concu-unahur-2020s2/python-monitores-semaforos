@@ -13,3 +13,7 @@ Un cigarrillo necesita de papel, tabaco y fósforos para ser preparado y fumado.
 * Que puedan haber en la mesa hasta un máximo de dos por cada ingrediente.
 * Que puedan haber en la mesa hasta un máximo de dos por cada ingrediente, salvo para fósforos que sea un máximo de uno.
 * Que los tres fumadores solamente ahora sean armadores de cigarillos, y que haya un único fumador. Como fumar es más lento que armar (poner los `sleep` para que se simule esto), entonces que haya una cantidad acotada de cigarrillos armados sin fumar.
+
+## Bonus extra
+
+* Que haya un agente por cada ingrediente, compitiendo todo el tiempo para poner su correspondiente ingrediente sobre la mesa, y que en la mesa haya a lo sumo dos ingredientes. Cuando en la mesa hay dos ingredientes pasa igual que en la situación original: el correspondiente fumador toma los dos ingredientes, arma el cigarrillo y fuma. Luego de nuevo los tres agentes compiten para poner dos ingredientes, etc.
