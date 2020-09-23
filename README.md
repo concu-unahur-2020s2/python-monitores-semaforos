@@ -8,7 +8,7 @@ Un cigarrillo necesita de papel, tabaco y fósforos para ser preparado y fumado.
 
 ## Bonus: variantes 
 
-Como base para empezar, siempre se puede tomar la solución original. Luego de eso, si se anima, puede mezclar dos o más ítems entre sí.
+Como base para empezar, siempre se puede tomar la solución original. Luego de eso, si se anima, puede mezclar dos o más ítems entre sí (según tenga sentido hacerlo).
 
 * Que haya tres agentes, y no una solo, uno por cada par de ingredientes. Compiten entre sí para entrar a la mesa y poner sus dos respectivos ingredientes.
 * Que la cantidad de veces que el agente pone ingredientes en la mesa sea acotada.
