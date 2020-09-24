@@ -4,6 +4,7 @@ Un cigarrillo necesita de papel, tabaco y fósforos para ser preparado y fumado.
 
 1. Usar `fumadores.py` como base para sincronizar el agente y los fumadores.
 1. ¿Hay alguna sección crítica?
+    - No, no hay seccion critica.
 1. En vez de con flags que den cuenta si hay o no tal cosa en la mesa, realice una versión con listas. Por ejemplo `listaPapel` si no está vacía es porque hay papel (la puede llenar con cualquier cosa, con 1s por ejemplo).
 
 ## Bonus: variantes 
