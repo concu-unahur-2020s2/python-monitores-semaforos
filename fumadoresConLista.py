@@ -48,7 +48,7 @@ def fumadorConTabaco():
     while True:
         while len(fosforosEnMesa) !=0 and len(papelEnMesa) != 0: # si hay fósforos y papel en la mesa
             fosforosEnMesa.pop(0) 
-            tabacoEnMesa.pop(0) # tomarlos
+            papelEnMesa.pop(0) # tomarlos
             print("fumadorConTabaco fumando 🚬") 
             time.sleep(2) # armar cigarrillo y fumar: se puede simular con un sleep
             semaforoAgente.release() # llamar de nuevo a agente para que reponga en la mesa dos cosas al azar

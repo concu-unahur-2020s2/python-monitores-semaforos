@@ -65,3 +65,6 @@ fumadorConPapelHilo.start()
 fumadorConFosforosHilo.start()
 fumadorConTabacoHilo.start()
 
+# ¿Hay alguna sección crítica?
+# No porque por mas que haya 3 variables globales cada fumador necesita cada una en su momento y 
+# por ende estas no se pisan.
