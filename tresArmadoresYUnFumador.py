@@ -6,8 +6,8 @@ papelEnMesa = False
 fosforosEnMesa = False
 tabacoEnMesa = False
 
-def armadorConPapel():
-     global papelEnMesa, fosforosEnMesa, tabacoEnMesa
+def armadorConPapel(monitor):
+    global papelEnMesa, fosforosEnMesa, tabacoEnMesa
     while True:
         print("Voy armar con papel")
         for i in range(5):
@@ -18,8 +18,8 @@ def armadorConPapel():
                 monitor.notify_all()
                 time.sleep(1)
 
-def armadorConFosforos():
-     global papelEnMesa, fosforosEnMesa, tabacoEnMesa
+def armadorConFosforos(monitor):
+    global papelEnMesa, fosforosEnMesa, tabacoEnMesa
     while True:
         print("Voy armar con fosforos")
         for i in range(5):
@@ -30,7 +30,7 @@ def armadorConFosforos():
                 monitor.notify_all()
                 time.sleep(1)
 
-def armadorConTabaco():
+def armadorConTabaco(monitor):
     global papelEnMesa, fosforosEnMesa, tabacoEnMesa
     while True:
         print("Voy armar con tabaco")
@@ -42,14 +42,19 @@ def armadorConTabaco():
                 monitor.notify_all()
                 time.sleep(1)
            
-def fumador():
-    global papelEnMesa, fosforosEnMesa, tabacoEnMesa
-    while True:
-        while fosforosEnMesa == True and tabacoEnMesa == True: # si hay fósforos y tabaco en la mesa
-            fosforosEnMesa = False 
-            tabacoEnMesa = False # tomarlos
-            print("fumador fumando 🚬") 
-            time.sleep(2) # armar cigarrillo y fumar: se puede simular con un sleep
+class Fumador(threading.Thread):
+    def __init__(self, monitor):
+        super().__init__()
+        self.monitor = monitor
+
+    def run(self):
+        while (True):
+            with self.monitor:         
+                while len(cigarrillosSinFumar)<1:    
+                    self.monitor.wait()  
+                x = cigarrillosSinFumar.pop(0) 
+                print("fumador fumando 🚬") 
+                time.sleep(2) 
     
 
 
@@ -58,12 +63,11 @@ cigarrillosSinFumar = []
 
 cigarrillosSinFumar_monit = threading.Condition()
 
-fumadorHilo = threading.Thread(target=fumador)
-armadorConPapelHilo = threading.Thread(target=armadorConPapel)
-armadorConFosforosHilo = threading.Thread(target=armadorConFosforos)
-armadorConTabacoHilo = threading.Thread(target= armadorConTabaco)
+fumadorA = Fumador(cigarrillosSinFumar_monit)
+fumadorA.start()
 
-fumadorHilo.start()
-armadorConPapelHilo.start()
-armadorConFosforosHilo.start()
-armadorConTabacoHilo.start()
+armadorConFosforos(cigarrillosSinFumar_monit)
+armadorConPapel(cigarrillosSinFumar_monit)
+armadorConTabaco(cigarrillosSinFumar_monit)
+
+
