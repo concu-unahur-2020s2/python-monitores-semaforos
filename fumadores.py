@@ -58,6 +58,7 @@ def fumadorConTabaco():
         semaforoAgente.release()
 
 
+
 agenteHilo = threading.Thread(target=agente)
 fumadorConPapelHilo = threading.Thread(target=fumadorConPapel)
 fumadorConFosforosHilo = threading.Thread(target=fumadorConFosforos)
