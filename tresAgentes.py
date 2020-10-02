@@ -9,9 +9,6 @@ tabacoEnMesa = False
 semaforoAgente1 = threading.Semaphore(1)
 semaforoAgente2 = threading.Semaphore(1)
 semaforoAgente3 = threading.Semaphore(1)
-semaforoPapel = threading.Semaphore(1)
-semaforoTabaco = threading.Semaphore(1)
-semaforoFosforo = threading.Semaphore(1)
 
 def agente1():
     global papelEnMesa, fosforosEnMesa, tabacoEnMesa
@@ -19,8 +16,6 @@ def agente1():
         semaforoAgente1.acquire()
         papelEnMesa = True
         tabacoEnMesa = True
-        semaforoPapel.release()
-        semaforoTabaco.release()
 
 def agente2():
     global papelEnMesa, fosforosEnMesa, tabacoEnMesa
@@ -28,9 +23,6 @@ def agente2():
         semaforoAgente2.acquire()
         papelEnMesa = True
         fosforosEnMesa = True
-        semaforoPapel.release()
-        semaforoFosforo.release()    
-
 
 def agente3():
     global papelEnMesa, fosforosEnMesa, tabacoEnMesa
@@ -38,15 +30,11 @@ def agente3():
         semaforoAgente3.acquire()
         fosforosEnMesa = True
         tabacoEnMesa = True
-        semaforoFosforo.release()
-        semaforoTabaco.release()
 
 
 def fumadorConPapel():
     while True:
-        semaforoTabaco.acquire()
-        semaforoFosforo.acquire()
-        if (fosforosEnMesa and tabacoEnMesa):
+        while (fosforosEnMesa and tabacoEnMesa):
         # si hay fósforos y tabaco en la mesa
             # tomarlos
             # armar cigarrillo y fumar: se puede simular con un sleep
@@ -57,9 +45,7 @@ def fumadorConPapel():
 
 def fumadorConFosforos():
     while True:
-        semaforoPapel.acquire()
-        semaforoTabaco.acquire()
-        if (papelEnMesa and tabacoEnMesa):
+        while (papelEnMesa and tabacoEnMesa):
         # si hay papel y tabaco en la mesa
             # tomarlos
             # armar cigarrillo y fumar: se puede simular con un sleep
@@ -70,9 +56,7 @@ def fumadorConFosforos():
 
 def fumadorConTabaco():
     while True:
-        semaforoFosforo.acquire()
-        semaforoPapel.acquire()
-        if (fosforosEnMesa and papelEnMesa):
+        while (fosforosEnMesa and papelEnMesa):
         # si hay fósforos y papel en la mesa
             # tomarlos
             # armar cigarrillo y fumar: se puede simular con un sleep
