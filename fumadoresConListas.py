@@ -7,7 +7,6 @@ listaTabaco = []
 listaFosforo = []
 
 def agente():
-    global papelEnMesa, fosforosEnMesa, tabacoEnMesa
     while True:
         caso = random.choice([0,1,2]) #al azar pone dos cosas en la mesa
         if caso == 0:
