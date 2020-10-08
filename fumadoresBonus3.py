@@ -6,24 +6,36 @@ listaPapel = []
 listaTabaco = []
 listaFosforo = []
 
+semaforoPapel = threading.Semaphore(2)
+semaforoTabaco = threading.Semaphore(2)
+semaforoFosforo = threading.Semaphore(2)
+
 def agente():
     while True:
         caso = random.choice([0,1,2]) #al azar pone dos cosas en la mesa
         if caso == 0:
+            semaforoPapel.acquire()
             listaPapel.append(1)
+            semaforoTabaco.acquire()
             listaTabaco.append(1)
         if caso == 1:
+            semaforoPapel.acquire()
             listaPapel.append(1)
+            semaforoFosforo.acquire()
             listaFosforo.append(1)
         if caso == 2:
+            semaforoFosforo.acquire()
             listaFosforo.append(1)
+            semaforoTabaco.acquire()
             listaTabaco.append(1)
         # esperar a reponer las cosas una vez que alguien haya tomado las dos anteriores
 
 def fumadorConPapel():
     while True:
         if (len(listaFosforo) > 0 and len(listaTabaco) > 0):
+            semaforoFosforo.release()
             listaFosforo.pop(0)
+            semaforoTabaco.release()
             listaTabaco.pop(0)
         # si hay fósforos y tabaco en la mesa
             # tomarlos
@@ -36,7 +48,9 @@ def fumadorConPapel():
 def fumadorConFosforos():
     while True:
         if (len(listaPapel) > 0 and len(listaTabaco) > 0):
+            semaforoPapel.release()
             listaPapel.pop(0)
+            semaforoTabaco.release()
             listaTabaco.pop(0)
         # si hay papel y tabaco en la mesa
             # tomarlos
@@ -49,7 +63,9 @@ def fumadorConFosforos():
 def fumadorConTabaco():
     while True:
         if (len(listaFosforo) > 0 and len(listaPapel) > 0):
+            semaforoFosforo.release()
             listaFosforo.pop(0)
+            semaforoPapel.release()
             listaPapel.pop(0)
         # si hay fósforos y papel en la mesa
             # tomarlos

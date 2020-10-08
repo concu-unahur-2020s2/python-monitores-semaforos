@@ -6,8 +6,10 @@ listaPapel = []
 listaTabaco = []
 listaFosforo = []
 
+agentePone = 6
+
 def agente():
-    while True:
+    for i in range(agentePone):
         caso = random.choice([0,1,2]) #al azar pone dos cosas en la mesa
         if caso == 0:
             listaPapel.append(1)
@@ -18,6 +20,7 @@ def agente():
         if caso == 2:
             listaFosforo.append(1)
             listaTabaco.append(1)
+        i = i + 1
         # esperar a reponer las cosas una vez que alguien haya tomado las dos anteriores
 
 def fumadorConPapel():
