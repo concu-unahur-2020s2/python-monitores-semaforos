@@ -2,9 +2,9 @@ import random
 import threading
 import time
 
-papelEnMesa = False
-fosforosEnMesa = False
-tabacoEnMesa = False
+papelEnMesa = []
+fosforosEnMesa = []
+tabacoEnMesa = []
 
 def agente():
     global papelEnMesa, fosforosEnMesa, tabacoEnMesa
@@ -12,25 +12,25 @@ def agente():
         semaforoAgente.acquire()
         caso = random.choice([0,1,2])
         if caso == 0:
-            papelEnMesa = True
-            tabacoEnMesa = True
+            papelEnMesa.append(1)
+            tabacoEnMesa.append(1)
             print("\nEl agente coloco papel y tabaco.")
         if caso == 1:
-            papelEnMesa = True
-            fosforosEnMesa = True
+            papelEnMesa.append(1)
+            fosforosEnMesa.append(1)
             print("\nEl agente coloco papel y fosforos.")
         if caso == 2:
-            fosforosEnMesa = True
-            tabacoEnMesa = True
+            fosforosEnMesa.append(1)
+            tabacoEnMesa.append(1)
             print("\nEl agente coloco fosforos y tabaco.")
         time.sleep(1)
 
 def fumadorConPapel():
     global papelEnMesa, fosforosEnMesa, tabacoEnMesa
     while True:
-        if fosforosEnMesa == True and tabacoEnMesa == True:
-            fosforosEnMesa = False
-            tabacoEnMesa = False
+        if len(fosforosEnMesa) == 1 and len(tabacoEnMesa) == 1:
+            fosforosEnMesa.pop(0)
+            tabacoEnMesa.pop(0)
             print("Fumador con papel esta fumando 🚬")
             time.sleep(2)
             semaforoAgente.release()
@@ -39,9 +39,9 @@ def fumadorConPapel():
 def fumadorConFosforos():
     global papelEnMesa, fosforosEnMesa, tabacoEnMesa
     while True:
-        if papelEnMesa == True and tabacoEnMesa == True:
-            papelEnMesa = False
-            tabacoEnMesa = False
+        if len(papelEnMesa) == 1 and len(tabacoEnMesa) == 1:
+            papelEnMesa.pop(0)
+            tabacoEnMesa.pop(0)
             print("Fumador con fosforos esta fumando 🚬")
             time.sleep(2)
             semaforoAgente.release()
@@ -49,9 +49,9 @@ def fumadorConFosforos():
 def fumadorConTabaco():
     global papelEnMesa, fosforosEnMesa, tabacoEnMesa
     while True:
-        if papelEnMesa == True and fosforosEnMesa == True:
-            papelEnMesa = False
-            fosforosEnMesa = False
+        if len(papelEnMesa) == 1 and len(fosforosEnMesa) == 1:
+            papelEnMesa.pop(0)
+            fosforosEnMesa.pop(0)
             print("Fumador con tabaco esta fumando 🚬")
             time.sleep(2)
             semaforoAgente.release()
