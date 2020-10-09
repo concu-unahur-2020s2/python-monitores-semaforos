@@ -2,60 +2,77 @@ import random
 import threading
 import time
 
-papelEnMesa = False
-fosforosEnMesa = False
-tabacoEnMesa = False
+listaPapel = []
+listaTabaco = []
+listaFosforo = []
 
-semaforoAgente = threading.Semaphore(1)
+semaforoPapel = threading.Semaphore(2)
+semaforoTabaco = threading.Semaphore(2)
+semaforoFosforo = threading.Semaphore(2)
 
 def agente():
-    global papelEnMesa, fosforosEnMesa, tabacoEnMesa
     while True:
-        semaforoAgente.acquire()
         caso = random.choice([0,1,2]) #al azar pone dos cosas en la mesa
         if caso == 0:
-            papelEnMesa = True
-            tabacoEnMesa = True
+            semaforoPapel.acquire()
+            listaPapel.append(1)
+            semaforoTabaco.acquire()
+            listaTabaco.append(1)
         if caso == 1:
-            papelEnMesa = True
-            fosforosEnMesa = True
+            semaforoPapel.acquire()
+            listaPapel.append(1)
+            semaforoFosforo.acquire()
+            listaFosforo.append(1)
         if caso == 2:
-            fosforosEnMesa = True
-            tabacoEnMesa = True
+            semaforoFosforo.acquire()
+            listaFosforo.append(1)
+            semaforoTabaco.acquire()
+            listaTabaco.append(1)
         # esperar a reponer las cosas una vez que alguien haya tomado las dos anteriores
 
 def fumadorConPapel():
     while True:
-        while (fosforosEnMesa and tabacoEnMesa):
+        if (len(listaFosforo) > 0 and len(listaTabaco) > 0):
+            semaforoFosforo.release()
+            listaFosforo.pop(0)
+            semaforoTabaco.release()
+            listaTabaco.pop(0)
         # si hay fósforos y tabaco en la mesa
             # tomarlos
             # armar cigarrillo y fumar: se puede simular con un sleep
             # llamar de nuevo a agente para que reponga en la mesa dos cosas al azar
             print("fumador1 con papel - tengo fosforo y tabaco en la mesa - voy a fumar")
             time.sleep(2)
-        semaforoAgente.release()
+
 
 def fumadorConFosforos():
     while True:
-        while (papelEnMesa and tabacoEnMesa):
+        if (len(listaPapel) > 0 and len(listaTabaco) > 0):
+            semaforoPapel.release()
+            listaPapel.pop(0)
+            semaforoTabaco.release()
+            listaTabaco.pop(0)
         # si hay papel y tabaco en la mesa
             # tomarlos
             # armar cigarrillo y fumar: se puede simular con un sleep
             # llamar de nuevo a agente para que reponga en la mesa dos cosas al azar
             print("fumador2 con fosforo - tengo tabaco y papel en la mesa - voy a fumar")
             time.sleep(2)
-        semaforoAgente.release()
+
 
 def fumadorConTabaco():
     while True:
-        while (fosforosEnMesa and papelEnMesa):
+        if (len(listaFosforo) > 0 and len(listaPapel) > 0):
+            semaforoFosforo.release()
+            listaFosforo.pop(0)
+            semaforoPapel.release()
+            listaPapel.pop(0)
         # si hay fósforos y papel en la mesa
             # tomarlos
             # armar cigarrillo y fumar: se puede simular con un sleep
             # llamar de nuevo a agente para que reponga en la mesa dos cosas al azar
             print("fumador3 con tabaco - tengo papel y fosforo en la mesa - voy a fumar")
             time.sleep(2)
-        semaforoAgente.release()
 
 
 
@@ -68,5 +85,3 @@ agenteHilo.start()
 fumadorConPapelHilo.start()
 fumadorConFosforosHilo.start()
 fumadorConTabacoHilo.start()
-
-

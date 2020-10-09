@@ -6,23 +6,31 @@ papelEnMesa = False
 fosforosEnMesa = False
 tabacoEnMesa = False
 
-semaforoAgente = threading.Semaphore(1)
+semaforoAgente1 = threading.Semaphore(1)
+semaforoAgente2 = threading.Semaphore(1)
+semaforoAgente3 = threading.Semaphore(1)
 
-def agente():
+def agente1():
     global papelEnMesa, fosforosEnMesa, tabacoEnMesa
     while True:
-        semaforoAgente.acquire()
-        caso = random.choice([0,1,2]) #al azar pone dos cosas en la mesa
-        if caso == 0:
-            papelEnMesa = True
-            tabacoEnMesa = True
-        if caso == 1:
-            papelEnMesa = True
-            fosforosEnMesa = True
-        if caso == 2:
-            fosforosEnMesa = True
-            tabacoEnMesa = True
-        # esperar a reponer las cosas una vez que alguien haya tomado las dos anteriores
+        semaforoAgente1.acquire()
+        papelEnMesa = True
+        tabacoEnMesa = True
+
+def agente2():
+    global papelEnMesa, fosforosEnMesa, tabacoEnMesa
+    while True:
+        semaforoAgente2.acquire()
+        papelEnMesa = True
+        fosforosEnMesa = True
+
+def agente3():
+    global papelEnMesa, fosforosEnMesa, tabacoEnMesa
+    while True:
+        semaforoAgente3.acquire()
+        fosforosEnMesa = True
+        tabacoEnMesa = True
+
 
 def fumadorConPapel():
     while True:
@@ -33,7 +41,7 @@ def fumadorConPapel():
             # llamar de nuevo a agente para que reponga en la mesa dos cosas al azar
             print("fumador1 con papel - tengo fosforo y tabaco en la mesa - voy a fumar")
             time.sleep(2)
-        semaforoAgente.release()
+        semaforoAgente3.release()
 
 def fumadorConFosforos():
     while True:
@@ -44,7 +52,7 @@ def fumadorConFosforos():
             # llamar de nuevo a agente para que reponga en la mesa dos cosas al azar
             print("fumador2 con fosforo - tengo tabaco y papel en la mesa - voy a fumar")
             time.sleep(2)
-        semaforoAgente.release()
+        semaforoAgente1.release()
 
 def fumadorConTabaco():
     while True:
@@ -55,18 +63,19 @@ def fumadorConTabaco():
             # llamar de nuevo a agente para que reponga en la mesa dos cosas al azar
             print("fumador3 con tabaco - tengo papel y fosforo en la mesa - voy a fumar")
             time.sleep(2)
-        semaforoAgente.release()
+        semaforoAgente2.release()
 
 
-
-agenteHilo = threading.Thread(target=agente)
+agenteHilo1 = threading.Thread(target=agente1)
+agenteHilo2 = threading.Thread(target=agente2)
+agenteHilo3 = threading.Thread(target=agente3)
 fumadorConPapelHilo = threading.Thread(target=fumadorConPapel)
 fumadorConFosforosHilo = threading.Thread(target=fumadorConFosforos)
 fumadorConTabacoHilo = threading.Thread(target=fumadorConTabaco)
 
-agenteHilo.start()
+agenteHilo1.start()
+agenteHilo2.start()
+agenteHilo3.start()
 fumadorConPapelHilo.start()
 fumadorConFosforosHilo.start()
 fumadorConTabacoHilo.start()
-
-

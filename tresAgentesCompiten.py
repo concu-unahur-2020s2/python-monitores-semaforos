@@ -8,21 +8,26 @@ tabacoEnMesa = False
 
 semaforoAgente = threading.Semaphore(1)
 
-def agente():
+def agente1():
     global papelEnMesa, fosforosEnMesa, tabacoEnMesa
     while True:
         semaforoAgente.acquire()
-        caso = random.choice([0,1,2]) #al azar pone dos cosas en la mesa
-        if caso == 0:
-            papelEnMesa = True
-            tabacoEnMesa = True
-        if caso == 1:
-            papelEnMesa = True
-            fosforosEnMesa = True
-        if caso == 2:
-            fosforosEnMesa = True
-            tabacoEnMesa = True
-        # esperar a reponer las cosas una vez que alguien haya tomado las dos anteriores
+        papelEnMesa = True
+        tabacoEnMesa = True
+
+def agente2():
+    global papelEnMesa, fosforosEnMesa, tabacoEnMesa
+    while True:
+        semaforoAgente.acquire()
+        papelEnMesa = True
+        fosforosEnMesa = True
+
+def agente3():
+    global papelEnMesa, fosforosEnMesa, tabacoEnMesa
+    while True:
+        semaforoAgente.acquire()
+        fosforosEnMesa = True
+        tabacoEnMesa = True
 
 def fumadorConPapel():
     while True:
@@ -58,15 +63,16 @@ def fumadorConTabaco():
         semaforoAgente.release()
 
 
-
-agenteHilo = threading.Thread(target=agente)
+agenteHilo1 = threading.Thread(target=agente1)
+agenteHilo2 = threading.Thread(target=agente2)
+agenteHilo3 = threading.Thread(target=agente3)
 fumadorConPapelHilo = threading.Thread(target=fumadorConPapel)
 fumadorConFosforosHilo = threading.Thread(target=fumadorConFosforos)
 fumadorConTabacoHilo = threading.Thread(target=fumadorConTabaco)
 
-agenteHilo.start()
+agenteHilo1.start()
+agenteHilo2.start()
+agenteHilo3.start()
 fumadorConPapelHilo.start()
 fumadorConFosforosHilo.start()
 fumadorConTabacoHilo.start()
-
-
