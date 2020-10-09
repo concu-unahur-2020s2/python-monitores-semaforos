@@ -1,70 +1,69 @@
 import random
 import threading
 import time
+import logging
 
-papelEnMesa = False
-fosforosEnMesa = False
-tabacoEnMesa = False
-semaforo = threading.Semaphore()
+
+logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(threadName)s] - %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
+
+n=2
+
+semaforoAgente = threading.Semaphore(0)
+semaforoFumadorConFosforos = threading.Semaphore(0)
+semaforoFumadorConTabaco = threading.Semaphore(0)
+semaforoFumadorConPapel = threading.Semaphore(0)
 
 def agente():
-    global papelEnMesa, fosforosEnMesa, tabacoEnMesa
-    semaforo.acquire()
     while True:
-        caso = random.choice([0,1,2]) #al azar pone dos cosas en la mesa
+        caso = random.choice([0,1,2])
         if caso == 0:
-            papelEnMesa = True
-            tabacoEnMesa = True
+            logging.info('Puse papel y tabaco...')
+            time.sleep(n)
+            semaforoFumadorConFosforos.release()
         if caso == 1:
-            papelEnMesa = True
-            fosforosEnMesa = True
+            logging.info('Puse papel y fósforos...')
+            time.sleep(n)
+            semaforoFumadorConTabaco.release()
         if caso == 2:
-            fosforosEnMesa = True
-            tabacoEnMesa = True
-        # esperar a reponer las cosas una vez que alguien haya tomado las dos anteriores
+            logging.info('Puse fósforos y tabaco...')
+            time.sleep(n)
+            semaforoFumadorConPapel.release()
+        semaforoAgente.acquire()
 
 def fumadorConPapel():
     while True:
-        # si hay fósforos y tabaco en la mesa
-        if 0 :
-            papelEnMesa = False
-            tabacoEnMesa = False
-            print('fumar papel')
-            time.sleep(2)
-            semaforo.release()
+        semaforoFumadorConPapel.acquire()
+        logging.info('Armando cigarrillo...')
+        time.sleep(n)
+        logging.info('Fumando cigarrillo...')
+        time.sleep(n)
+        semaforoAgente.release()
 
-      
 
 def fumadorConFosforos():
     while True:
-        # si hay papel y tabaco en la mesa
-        if 1 :
-            papelEnMesa = False
-            tabacoEnMesa = False
-            print('fumar fosforo')
-            time.sleep(2)
-            semaforo.release()
-          
+        semaforoFumadorConFosforos.acquire()
+        logging.info('Armando cigarrillo...')
+        time.sleep(n)
+        logging.info('Fumando cigarrillo...')
+        time.sleep(n)
+        semaforoAgente.release()
 
 def fumadorConTabaco():
     while True:
-        # si hay fósforos y papel en la mesa
-        if 2:
-            fosforosEnMesa = False
-            papelEnMesa = False
-            print('fumar tabaco')
-            time.sleep(2)
-            semaforo.release()
-        
+        semaforoFumadorConTabaco.acquire()
+        logging.info('Armando cigarrillo...')
+        time.sleep(n)
+        logging.info('Fumando cigarrillo...')
+        time.sleep(n)
+        semaforoAgente.release()
 
+agente = threading.Thread(target=agente, name='Agente')
+fumadorConPapel = threading.Thread(target=fumadorConPapel, name='Fumador con papel')
+fumadorConFosforos = threading.Thread(target=fumadorConFosforos, name='Fumador con fósforos')
+fumadorConTabaco = threading.Thread(target=fumadorConTabaco, name='Fumador con tabaco')
 
-agenteHilo = threading.Thread(target=agente)
-fumadorConPapelHilo = threading.Thread(target=fumadorConPapel)
-fumadorConFosforosHilo = threading.Thread(target=fumadorConFosforos)
-fumadorConTabacoHilo = threading.Thread(target=fumadorConTabaco)
-
-agenteHilo.start()
-fumadorConPapelHilo.start()
-fumadorConFosforosHilo.start()
-fumadorConTabacoHilo.start()
-
+agente.start()
+fumadorConPapel.start()
+fumadorConFosforos.start()
+fumadorConTabaco.start()
